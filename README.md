@@ -1,4 +1,4 @@
-# @your-org/quill-table-better
+# @iwanmastah/quill-table-better
 
 A module that enhances the table functionality of [Quill](https://quilljs.com/).
 
@@ -16,7 +16,7 @@ This fork includes several important improvements over the original:
 ## 📦 Installation
 
 ```bash
-npm install @your-org/quill-table-better
+npm install @iwanmastah/quill-table-better
 ```
 
 ## 🙏 Credits
