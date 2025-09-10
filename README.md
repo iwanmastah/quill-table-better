@@ -368,11 +368,5 @@ For the original package and its changelog, see: https://github.com/attoae/quill
 
 ## Download
 ```JavaScript
-npm i @your-org/quill-table-better
-```
-
-### CDN
-```html
-<link href="https://cdn.jsdelivr.net/npm/quill-table-better@1/dist/quill-table-better.css" rel="stylesheet"/>
-<script src="https://cdn.jsdelivr.net/npm/quill-table-better@1/dist/quill-table-better.js"></script>
+npm i @iwanmastah/quill-table-better
 ```
