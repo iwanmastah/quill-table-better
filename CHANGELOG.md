@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0] - 2025-09-26
+
+### 🎨 New Features
+- **Default inline table styling** - Tables now include default border, padding, and layout styles in Delta and HTML output
+- **Visual consistency** - Tables appear identical in editor and when exported/rendered outside editor
+- **Enhanced copy/paste fidelity** - Table styling is preserved during copy/paste operations
+
+### 🔧 Technical Improvements
+- **Inline style integration** - Default styles are embedded directly in Quill's Delta format
+- **Dynamic styling** - New rows and columns automatically inherit proper styling
+- **Style utility functions** - Added `formatStyleString`, `parseStyleString`, and `mergeStyles` utilities
+- **Enhanced table creation** - `insertTable()` now applies comprehensive default styling
+
+### 📋 Default Styles Applied
+- **Tables**: `border-collapse: collapse`, `width: 100%`
+- **Cells (TD)**: `border: 1px solid #000000`, `padding: 2px 5px`, `vertical-align: middle`
+- **Headers (TH)**: Same as cells plus `background: #0000000d`, `font-weight: bold`
+
+### 🛡️ Compatibility
+- **Backward compatible** - Existing tables remain unchanged
+- **Style override** - Manual styling still takes precedence
+- **CSS fallback** - Editor CSS remains for unstyled tables
+
+### 💎 Benefits
+- Solves visual inconsistency between editor and exported content
+- Tables render with borders when viewed outside the editor
+- Improved developer experience with inline styles for debugging
+- Better cross-platform consistency
+
 ## [1.3.1] - 2025-09-26
 
 ### 🔄 Upstream Merge
