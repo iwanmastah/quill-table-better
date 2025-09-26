@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Table Inline Styling Test</title>
+  <script src="../dist/quill-table-better.js"></script>
+  <link rel="stylesheet" href="../dist/quill-table-better.css">
+</head>
+<body>
+  <h1>Table Inline Styling Feature Test</h1>
+  
+  <div id="editor"></div>
+  
+  <div style="margin-top: 20px;">
+    <button id="insertTable">Insert 2x3 Table</button>
+    <button id="getContents">Get Delta Contents</button>
+    <button id="getHTML">Get HTML</button>
+    <button id="clearEditor">Clear Editor</button>
+  </div>
+  
+  <div style="margin-top: 20px;">
+    <h3>Delta Output:</h3>
+    <pre id="deltaOutput" style="background: #f5f5f5; padding: 10px; white-space: pre-wrap;"></pre>
+    
+    <h3>HTML Output:</h3>
+    <pre id="htmlOutput" style="background: #f5f5f5; padding: 10px; white-space: pre-wrap;"></pre>
+    
+    <h3>HTML Rendered (outside editor):</h3>
+    <div id="renderedOutput" style="border: 1px solid #ccc; padding: 10px; background: white;"></div>
+  </div>
+
+  <script>
+    // Initialize Quill with table-better
+    const quill = new Quill('#editor', {
+      theme: 'snow',
+      modules: {
+        toolbar: [
+          ['bold', 'italic'],
+          ['table-better']
+        ],
+        'table-better': {
+          toolbarTable: true
+        },
+        keyboard: {
+          bindings: QuillTableBetter.keyboardBindings
+        }
+      }
+    });
+
+    // Register the table-better module
+    Quill.register({
+      'modules/table-better': QuillTableBetter
+    }, true);
+
+    // Button event handlers
+    document.getElementById('insertTable').addEventListener('click', () => {
+      const tableModule = quill.getModule('table-better');
+      if (tableModule) {
+        tableModule.insertTable(2, 3);
+      }
+    });
+
+    document.getElementById('getContents').addEventListener('click', () => {
+      const delta = quill.getContents();
+      document.getElementById('deltaOutput').textContent = JSON.stringify(delta, null, 2);
+    });
+
+    document.getElementById('getHTML').addEventListener('click', () => {
+      const html = quill.getSemanticHTML();
+      document.getElementById('htmlOutput').textContent = html;
+      document.getElementById('renderedOutput').innerHTML = html;
+    });
+
+    document.getElementById('clearEditor').addEventListener('click', () => {
+      quill.setContents([]);
+      document.getElementById('deltaOutput').textContent = '';
+      document.getElementById('htmlOutput').textContent = '';
+      document.getElementById('renderedOutput').innerHTML = '';
+    });
+  </script>
+</body>
+</html>
