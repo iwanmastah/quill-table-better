@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.1] - 2025-09-26
+
+### 🔄 Upstream Merge
+- Merged latest changes from [attoae/quill-table-better](https://github.com/attoae/quill-table-better) upstream repository
+
+### 🐛 Bug Fixes (from upstream)
+- **Fixed error when deleting all rows via keyboard shortcut** (#134) - Resolved crashes when using Ctrl+X/Ctrl+Shift+X to delete entire rows
+- **Fixed menu/property dialog positioning** - Table menus and property dialogs now position correctly in all screen configurations
+- **Added null cell check to exitTableFocus** - Prevents errors when exiting table focus with invalid cell references
+- **Fixed /src/config lose** - Resolved configuration loss issues
+
+### ✨ Improvements (from upstream)
+- **Refactored SVG icons to use currentColor** - Icons now properly inherit text color for better theming support
+- **Removed unused save.svg icon** - Cleaned up unused assets to reduce package size
+- **Enhanced dialog positioning logic** - Improved reliability of popup positioning calculations
+
+### 🔧 Technical Details
+- Updated cell selection logic with better null safety
+- Improved table menu positioning algorithms
+- Enhanced icon color inheritance for better theme compatibility
+- Streamlined asset management
+
+### 📈 Package Info
+- **Size**: 144.2 kB (597.4 kB unpacked)
+- **Files**: 96 files included
+- **Compatibility**: Maintains full backward compatibility
+
 ## [1.3.0] - 2025-09-09 (Fork Release)
 
 ### 🚀 Fork Improvements
