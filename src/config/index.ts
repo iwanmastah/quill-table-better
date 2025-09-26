@@ -27,6 +27,26 @@ const CELL_DEFAULT_VALUES: Props = {
   'vertical-align': 'middle'
 };
 
+// Default styles applied to newly created tables and cells
+const TABLE_DEFAULT_INLINE_STYLES: Props = {
+  'border-collapse': 'collapse',
+  'width': '100%'
+};
+
+const CELL_DEFAULT_INLINE_STYLES: Props = {
+  'border': '1px solid #000000',
+  'padding': '2px 5px',
+  'vertical-align': 'middle'
+};
+
+const TH_DEFAULT_INLINE_STYLES: Props = {
+  'border': '1px solid #000000',
+  'padding': '2px 5px', 
+  'vertical-align': 'middle',
+  'background': '#0000000d',
+  'font-weight': 'bold'
+};
+
 const CELL_DEFAULT_WIDTH = 72;
 
 const CELL_PROPERTIES = [
@@ -434,5 +454,8 @@ export {
   COLORS,
   DEVIATION,
   TABLE_PROPERTIES,
+  TABLE_DEFAULT_INLINE_STYLES,
+  CELL_DEFAULT_INLINE_STYLES,
+  TH_DEFAULT_INLINE_STYLES,
   getProperties
 };

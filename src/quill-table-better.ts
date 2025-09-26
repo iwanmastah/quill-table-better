@@ -32,7 +32,8 @@ import CellSelection from './ui/cell-selection';
 import OperateLine from './ui/operate-line';
 import TableMenus from './ui/table-menus';
 import ToolbarTable, { TableSelect } from './ui/toolbar-table';
-import { getCellId, getCorrectCellBlot } from './utils';
+import { getCellId, getCorrectCellBlot, formatStyleString } from './utils';
+import { TABLE_DEFAULT_INLINE_STYLES, CELL_DEFAULT_INLINE_STYLES } from './config';
 import TableToolbar from './modules/toolbar';
 import TableClipboard from './modules/clipboard';
 
@@ -279,7 +280,11 @@ class Table extends Module {
     const range = this.quill.getSelection(true);
     if (range == null) return;
     if (this.isTable(range)) return;
-    const style = `width: 100%`;
+    
+    // Apply default table styles to match editor appearance
+    const tableStyle = formatStyleString(TABLE_DEFAULT_INLINE_STYLES);
+    const cellStyle = formatStyleString(CELL_DEFAULT_INLINE_STYLES);
+    
     const formats = this.quill.getFormat(range.index - 1);
     const [, offset] = this.quill.getLine(range.index);
     const isExtra = !!formats[TableCellBlock.blotName] || offset !== 0;
@@ -289,13 +294,16 @@ class Table extends Module {
       .retain(range.index)
       .delete(range.length)
       .concat(extraDelta)
-      .insert('\n', { [TableTemporary.blotName]: { style } });
+      .insert('\n', { [TableTemporary.blotName]: { style: tableStyle } });
     const delta = new Array(rows).fill(0).reduce(memo => {
       const id = tableId();
       return new Array(columns).fill('\n').reduce((memo, text) => {
         return memo.insert(text, {
           [TableCellBlock.blotName]: cellId(),
-          [TableCell.blotName]: { 'data-row': id }
+          [TableCell.blotName]: { 
+            'data-row': id, 
+            style: cellStyle 
+          }
         });
       }, memo);
     }, base);

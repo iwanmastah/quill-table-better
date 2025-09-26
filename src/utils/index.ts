@@ -413,6 +413,41 @@ function updateTableWidth(
   }
 }
 
+/**
+ * Convert style object to inline style string
+ */
+function formatStyleString(styles: Props): string {
+  return Object.entries(styles)
+    .filter(([, value]) => value !== '' && value != null)
+    .map(([key, value]) => `${key}: ${value}`)
+    .join('; ');
+}
+
+/**
+ * Parse inline style string to object
+ */
+function parseStyleString(styleString: string): Props {
+  const styles: Props = {};
+  if (!styleString) return styles;
+  
+  styleString.split(';').forEach(rule => {
+    const [key, value] = rule.split(':').map(s => s.trim());
+    if (key && value) {
+      styles[key] = value;
+    }
+  });
+  return styles;
+}
+
+/**
+ * Merge default styles with existing styles
+ */
+function mergeStyles(defaultStyles: Props, existingStyle?: string): string {
+  const existing = parseStyleString(existingStyle || '');
+  const merged = { ...defaultStyles, ...existing };
+  return formatStyleString(merged);
+}
+
 export {
   addDimensionsUnit,
   convertUnitToInteger,
@@ -443,5 +478,8 @@ export {
   setElementProperty,
   throttle,
   throttleStrong,
-  updateTableWidth
+  updateTableWidth,
+  formatStyleString,
+  mergeStyles,
+  parseStyleString
 };

@@ -14,8 +14,11 @@ import { ListContainer } from './list';
 import {
   CELL_ATTRIBUTE,
   CELL_DEFAULT_WIDTH,
+  CELL_DEFAULT_INLINE_STYLES,
+  TH_DEFAULT_INLINE_STYLES,
   DEVIATION
 } from '../config';
+import { formatStyleString } from '../utils';
 
 const Block = Quill.import('blots/block') as typeof BlockBlot;
 const Container = Quill.import('blots/container') as typeof ContainerBlot;
@@ -134,7 +137,12 @@ class TableCell extends Container {
     const node = super.create() as HTMLElement;
     const keys = Object.keys(value);
     for (const key of keys) {
-      value[key] && node.setAttribute(key, value[key]);
+      if (key === 'style' && value[key]) {
+        // Apply inline styles directly to the node
+        node.style.cssText = value[key];
+      } else if (value[key]) {
+        node.setAttribute(key, value[key]);
+      }
     }
     return node;
   }
@@ -660,8 +668,13 @@ class TableContainer extends Container {
       tbody.insertBefore(row, null);
     }
     const colgroup = this.colgroup();
-    const formats = colgroup ? { 'data-row': id } : { 'data-row': id, width: `${CELL_DEFAULT_WIDTH}` };
+    const formats: Props = colgroup ? { 'data-row': id } : { 'data-row': id, width: `${CELL_DEFAULT_WIDTH}` };
+    
+    // Apply default styles for new column cells
     const isTableRow = row.statics.blotName === TableRow.blotName;
+    const defaultStyles = isTableRow ? CELL_DEFAULT_INLINE_STYLES : TH_DEFAULT_INLINE_STYLES;
+    formats.style = formatStyleString(defaultStyles);
+    
     const cellBlotName = isTableRow ? TableCell.blotName : TableTh.blotName;
     const blockBlotName = isTableRow ? TableCellBlock.blotName : TableThBlock.blotName;
     const cell = this.scroll.create(cellBlotName, formats) as TableCell;
@@ -692,6 +705,13 @@ class TableContainer extends Container {
     } else {
       delete formats['colspan'];
     }
+    
+    // Apply default styles for new cells if not already present
+    if (!formats.style) {
+      const defaultStyles = isTh ? TH_DEFAULT_INLINE_STYLES : CELL_DEFAULT_INLINE_STYLES;
+      formats.style = formatStyleString(defaultStyles);
+    }
+    
     const cellBlotName = isTh ? TableTh.blotName : TableCell.blotName;
     const blockBlotName = isTh ? TableThBlock.blotName : TableCellBlock.blotName;
     const cell = this.scroll.create(cellBlotName, formats) as TableCell;
