@@ -468,6 +468,7 @@ class TableMenus {
 
   deleteRow(isKeyboard: boolean = false) {
     const selectedTds = this.tableBetter.cellSelection.selectedTds;
+    if (!selectedTds?.length) return;
     const rows = this.getCorrectRows();
     if (isKeyboard) {
       const sum = rows.reduce((sum: number, row: TableRow) => {
@@ -572,7 +573,7 @@ class TableMenus {
   }
 
   getCorrectBounds(table: HTMLElement): CorrectBound[] {
-    const bounds = this.quill.container.getBoundingClientRect();
+    const bounds = getCorrectBounds(this.quill.container);
     const tableBounds = getCorrectBounds(table, this.quill.container);
     return (
       tableBounds.width >= bounds.width

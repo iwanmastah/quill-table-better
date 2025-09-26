@@ -12,7 +12,7 @@ import type {
 import eraseIcon from '../assets/icon/erase.svg';
 import downIcon from '../assets/icon/down.svg';
 import paletteIcon from '../assets/icon/palette.svg';
-import saveIcon from '../assets/icon/save.svg';
+import saveIcon from '../assets/icon/check.svg';
 import closeIcon from '../assets/icon/close.svg';
 import { getProperties } from '../config';
 import {
@@ -20,6 +20,7 @@ import {
   createTooltip,
   getClosestElement,
   getComputeSelectedCols,
+  getCorrectBounds,
   getCorrectContainerWidth,
   getCorrectWidth,
   isDimensions,
@@ -99,7 +100,7 @@ class TablePropertiesForm {
     this.attrs = { ...options.attribute };
     this.borderForm = [];
     this.saveButton = null;
-    this.form = this.createPropertiesForm(options); 
+    this.form = this.createPropertiesForm(options);
   }
 
   checkBtnsAction(status: string) {
@@ -175,7 +176,7 @@ class TablePropertiesForm {
 
   createColorInput(child: Child) {
     const container = this.createInput(child);
-    container.classList.add('label-field-view-color');    
+    container.classList.add('label-field-view-color');
     return container;
   }
 
@@ -236,6 +237,7 @@ class TablePropertiesForm {
     const button = document.createElement('button');
     icon.innerHTML = svg;
     button.innerText = text;
+    button.setAttribute('type', 'button');
     container.classList.add('erase-container');
     container.appendChild(icon);
     container.appendChild(button);
@@ -343,7 +345,7 @@ class TablePropertiesForm {
     const colorPicker = new iro.ColorPicker(iroContainer, {
       width: 110,
       layout: [
-        { 
+        {
           component: iro.ui.Wheel,
           options: {}
         }
@@ -562,7 +564,7 @@ class TablePropertiesForm {
     const isPercent = tableBlot.isPercent();
     const attrs = this.getDiffProperties();
     const floatW = parseFloat(attrs['width']);
-    const width = 
+    const width =
       attrs['width']?.endsWith('%')
         ? floatW * getCorrectContainerWidth() / 100
         : floatW;
@@ -703,7 +705,7 @@ class TablePropertiesForm {
     if (status) {
       wrapper.classList.add('label-field-view-error');
       this.setSaveButtonDisabled(true);
-    } else { 
+    } else {
       wrapper.classList.remove('label-field-view-error');
       const wrappers = this.form.querySelectorAll('.label-field-view-error');
       if (!wrappers.length) this.setSaveButtonDisabled(false);
@@ -713,7 +715,8 @@ class TablePropertiesForm {
   updatePropertiesForm(container: HTMLElement, type: string) {
     container.classList.remove('ql-table-triangle-none');
     const { height, width } = container.getBoundingClientRect();
-    const containerBounds = this.tableMenus.quill.container.getBoundingClientRect();
+    const quillContainer = this.tableMenus.quill.container;
+    const containerBounds = getCorrectBounds(quillContainer);
     const { top, left, right, bottom } = this.getComputeBounds(type);
     const { viewHeight } = this.getViewportSize();
     let correctTop = bottom + 10;
